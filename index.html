@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGC NET Paper 1 Simulator - ICT & Communication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const QUIZ_DATA = [
+            // --- ICT QUESTIONS (25 Questions) ---
+            {
+                id: 1,
+                type: "Standard",
+                question: "Which of the following correctly describes the components of ICT?",
+                options: [
+                    "Information and Computer Technology",
+                    "Internet and Communication Technology",
+                    "Information and Communication Technology",
+                    "Inter-connected Communication Technology"
+                ],
+                correctAnswer: 2,
+                explanation: "ICT stands for Information and Communication Technology. NTA often sets traps by replacing 'Communication' with 'Computer', but ICT must include all three: Information, Communication, and Technology."
+            },
+            {
+                id: 2,
+                type: "Statement",
+                question: "Given below are two statements regarding computer generations:\n\nStatement I: The Second Generation of computers utilized Integrated Circuits (ICs) which significantly increased speed and efficiency.\nStatement II: The Fourth Generation of computers is characterized by Very Large-Scale Integrated Circuits (VLSIC) and the invention of microcomputers.\n\nIn the light of the above statements, choose the most appropriate answer:",
+                options: [
+                    "Both Statement I and Statement II are correct",
+                    "Both Statement I and Statement II are incorrect",
+                    "Statement I is correct but Statement II is incorrect",
+                    "Statement I is incorrect but Statement II is correct"
+                ],
+                correctAnswer: 3,
+                explanation: "Statement I is incorrect because the Second Generation used Transistors. Integrated Circuits (ICs) were introduced in the Third Generation. Statement II is correct as the Fourth generation (1974-1990) utilized VLSIC."
+            },
+            {
+                id: 3,
+                type: "Assertion-Reason",
+                question: "Given below are two statements, one is labelled as Assertion (A) and the other as Reason (R):\n\nAssertion (A): The processing speed of supercomputers is typically measured in Petaflops.\nReason (R): Mainframe computers are faster and larger than supercomputers, handling complex mathematical computations for single users.\n\nChoose the correct answer:",
+                options: [
+                    "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+                    "Both (A) and (R) are true but (R) is NOT the correct explanation of (A)",
+                    "(A) is true but (R) is false",
+                    "(A) is false but (R) is true"
+                ],
+                correctAnswer: 2,
+                explanation: "Assertion (A) is true. Reason (R) is false because Supercomputers are the fastest and largest computers, not Mainframes. Mainframes are measured in MIPS and handle massive data storage for thousands of users, whereas Supercomputers are measured in FLOPS."
+            },
+            {
+                id: 4,
+                type: "PYQ",
+                question: "PYQ: India's first indigenously developed supercomputer is:",
+                options: [
+                    "PARAM Pravega",
+                    "PARAM 8000",
+                    "Pratyush",
+                    "PARAM Shivay"
+                ],
+                correctAnswer: 1,
+                explanation: "PARAM 8000 was India's first supercomputer, developed by C-DAC in 1991."
+            },
+            {
+                id: 5,
+                type: "Trap",
+                question: "NTA TRAP: Which type of computer is primarily designed to act as a centralized storage system for large databases allowing maximum users simultaneously (e.g., banking systems)?",
+                options: [
+                    "Supercomputer",
+                    "Mainframe computer",
+                    "Minicomputer",
+                    "Workstation"
+                ],
+                correctAnswer: 1,
+                explanation: "Mainframes are designed for large databases and maximum simultaneous users (like banking). Do not confuse this with Supercomputers, which are meant for complex mathematical/scientific calculations."
+            },
+            {
+                id: 6,
+                type: "Standard",
+                question: "A Hybrid computer is best defined as a machine that:",
+                options: [
+                    "Only processes continuous data signals",
+                    "Only processes discrete binary data (0s and 1s)",
+                    "Combines the speed of analogue computers with the accuracy of digital computers",
+                    "Functions as a network distributed operating system"
+                ],
+                correctAnswer: 2,
+                explanation: "Hybrid computers combine the speed of analogue computers (measuring continuous variables) with the accuracy of digital computers (discrete data). They are heavily used in ICU medical monitoring."
+            },
+            {
+                id: 7,
+                type: "Assertion-Reason",
+                question: "Assertion (A): Computer-Assisted Learning (CAL) is highly effective because it can adapt and respond to a learner's specific difficulties.\nReason (R): CAL simply refers to learning by watching standard educational videos passively on a computer monitor.\n\nChoose the correct answer:",
+                options: [
+                    "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+                    "Both (A) and (R) are true but (R) is NOT the correct explanation of (A)",
+                    "(A) is true but (R) is false",
+                    "(A) is false but (R) is true"
+                ],
+                correctAnswer: 2,
+                explanation: "(A) is true. (R) is false because CAL is defined as 'computer-mediated information flow with adaptive responses', not just passively watching videos."
+            },
+            {
+                id: 8,
+                type: "Statement",
+                question: "Statement I: Moodle is an example of a proprietary, strictly cloud-based Learning Management System (LMS).\nStatement II: Canvas is the most popular open-source, on-premise LMS.\n\nChoose the correct answer:",
+                options: [
+                    "Both Statement I and Statement II are correct",
+                    "Both Statement I and Statement II are incorrect",
+                    "Statement I is correct but Statement II is incorrect",
+                    "Statement I is incorrect but Statement II is correct"
+                ],
+                correctAnswer: 1,
+                explanation: "Both statements are incorrect (they are swapped). Moodle is the most popular open-source, self-hosted (on-premise) LMS. Canvas is a proprietary, primarily cloud-based LMS."
+            },
+            {
+                id: 9,
+                type: "Standard",
+                question: "Under the NMEICT program, the 'e-Yantra' initiative primarily focuses on:",
+                options: [
+                    "Providing an open-access digital repository of PhD theses",
+                    "Incorporating robotics into engineering education",
+                    "Providing live virtual classrooms to remote faculty",
+                    "Creating a database of scientific experts"
+                ],
+                correctAnswer: 1,
+                explanation: "e-Yantra is an MHRD initiative under NMEICT designed to incorporate robotics into engineering education to develop practical skills."
+            },
+            {
+                id: 10,
+                type: "Standard",
+                question: "Which digital initiative acts as a platform to facilitate access to high-quality electronic resources, electronic journals, and databases for Higher Education Institutions?",
+                options: [
+                    "e-ShodhSindhu",
+                    "e-Acharya",
+                    "e-Kalpa",
+                    "Talk to a Teacher"
+                ],
+                correctAnswer: 0,
+                explanation: "e-ShodhSindhu is implemented by INFLIBNET and provides subscription-based access to electronic journals and databases for higher education institutions."
+            },
+            {
+                id: 11,
+                type: "Assertion-Reason",
+                question: "Assertion (A): SWAYAM courses allow university students to transfer credits to their academic records.\nReason (R): In 2016, UGC and AICTE issued regulations recognizing SWAYAM courses for credit transfer in universities.\n\nChoose the correct answer:",
+                options: [
+                    "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+                    "Both (A) and (R) are true but (R) is NOT the correct explanation of (A)",
+                    "(A) is true but (R) is false",
+                    "(A) is false but (R) is true"
+                ],
+                correctAnswer: 0,
+                explanation: "Both (A) and (R) are true, and (R) explains (A). The UGC Regulation 2016 specifically allowed universities to identify and adopt SWAYAM courses for credit transfer."
+            },
+            {
+                id: 12,
+                type: "Standard",
+                question: "The National Digital Library (NDL), developed under the National Mission on Education through ICT, is implemented by which institution?",
+                options: [
+                    "IIT Bombay",
+                    "IIT Delhi",
+                    "IIT Kanpur",
+                    "IIT Kharagpur"
+                ],
+                correctAnswer: 3,
+                explanation: "The National Digital Library (NDL) is implemented by IIT Kharagpur."
+            },
+            {
+                id: 13,
+                type: "Statement",
+                question: "Statement I: 'e-Acharya' is an integrated e-content portal hosted on the 'Baadal' cloud infrastructure by IIT Delhi.\nStatement II: 'FOSSEE' is an initiative sanctioned by IIT Bombay to promote the use of Free and Open-Source Software in Education.\n\nChoose the correct answer:",
+                options: [
+                    "Both Statement I and Statement II are correct",
+                    "Both Statement I and Statement II are incorrect",
+                    "Statement I is correct but Statement II is incorrect",
+                    "Statement I is incorrect but Statement II is correct"
+                ],
+                correctAnswer: 0,
+                explanation: "Both statements are correct. e-Acharya is the NMEICT e-content repository, and FOSSEE (IIT Bombay) promotes open-source software like Scilab and Python."
+            },
+            {
+                id: 14,
+                type: "Standard",
+                question: "The INFLIBNET initiative named 'Vidwan' is primarily a:",
+                options: [
+                    "Design learning resource database",
+                    "Database of experts and National Researcher's Network",
+                    "MOOC management software",
+                    "Platform for remote operation of scientific experiments"
+                ],
+                correctAnswer: 1,
+                explanation: "Vidwan is the premier database of profiles of scientists, researchers, and faculty members working at academic institutions and R&D organizations."
+            },
+            {
+                id: 15,
+                type: "Trap",
+                question: "Which of the following is an example of System Software rather than Application Software?",
+                options: [
+                    "Google Docs",
+                    "Microsoft Windows Operating System",
+                    "Adobe Photoshop",
+                    "Mendeley"
+                ],
+                correctAnswer: 1,
+                explanation: "Operating systems, drivers, and utilities are System Software. Word processors, graphic editors, and reference managers are Application Software."
+            },
+            {
+                id: 16,
+                type: "Statement",
+                question: "Statement I: Turnitin and Copyscape are popular examples of Reference Management Software.\nStatement II: Mendeley and Zotero are widely used Plagiarism Detection Software.\n\nChoose the correct answer:",
+                options: [
+                    "Both Statement I and Statement II are correct",
+                    "Both Statement I and Statement II are incorrect",
+                    "Statement I is correct but Statement II is incorrect",
+                    "Statement I is incorrect but Statement II is correct"
+                ],
+                correctAnswer: 1,
+                explanation: "Both statements are incorrect because the definitions are swapped. Turnitin and Copyscape are for Plagiarism Detection. Mendeley and Zotero are Reference Management Software."
+            },
+            {
+                id: 17,
+                type: "Assertion-Reason",
+                question: "Assertion (A): Asynchronous communication allows individuals to be thoughtful and proactive rather than constantly interrupted.\nReason (R): Examples of asynchronous communication include face-to-face meetings and live video conferencing.\n\nChoose the correct answer:",
+                options: [
+                    "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+                    "Both (A) and (R) are true but (R) is NOT the correct explanation of (A)",
+                    "(A) is true but (R) is false",
+                    "(A) is false but (R) is true"
+                ],
+                correctAnswer: 2,
+                explanation: "(A) is true, but (R) is false. Face-to-face meetings and live video calls are SYNCHRONOUS. Asynchronous examples include Email and discussion forums."
+            },
+            {
+                id: 18,
+                type: "Standard",
+                question: "According to Von Neumann Architecture, which component is considered the 'Brain of the Computer'?",
+                options: [
+                    "Memory Unit",
+                    "Input Unit",
+                    "Central Processing Unit (CPU)",
+                    "Output Unit"
+                ],
+                correctAnswer: 2,
+                explanation: "The Central Processing Unit (CPU) is known as the brain of the computer as it controls all data processing activities."
+            },
+            {
+                id: 19,
+                type: "Statement",
+                question: "Statement I: The Control Unit inside a CPU performs all mathematical calculations and logical comparisons.\nStatement II: The Arithmetic Logic Unit (ALU) communicates with memory units but does NOT process data itself.\n\nChoose the correct answer:",
+                options: [
+                    "Both Statement I and Statement II are correct",
+                    "Both Statement I and Statement II are incorrect",
+                    "Statement I is correct but Statement II is incorrect",
+                    "Statement I is incorrect but Statement II is correct"
+                ],
+                correctAnswer: 1,
+                explanation: "Both statements are incorrect (swapped functions). The ALU performs mathematical/logical processing. The Control Unit directs operations but does NOT process data."
+            },
+            {
+                id: 20,
+                type: "Standard",
+                question: "The 'PM e-Vidya' initiative structure for school education is based on which of the following models?",
+                options: [
+                    "One Student - One Laptop",
+                    "One Class - One Channel",
+                    "One School - One Network",
+                    "One District - One E-library"
+                ],
+                correctAnswer: 1,
+                explanation: "The PM e-Vidya initiative features a 'One Class - One Channel' structure utilizing 12 dedicated DTH TV channels for classes 1 to 12."
+            },
+            {
+                id: 21,
+                type: "Standard",
+                question: "In the context of computer performance measurement, what does FLOPS stand for?",
+                options: [
+                    "File Logical Operations Per Second",
+                    "Floating Point Operations Per Second",
+                    "Format Line Operations Per Second",
+                    "Fast Logic Output Processing System"
+                ],
+                correctAnswer: 1,
+                explanation: "FLOPS stands for Floating Point Operations Per Second, which is the standard measurement for supercomputer processing speed."
+            },
+            {
+                id: 22,
+                type: "Trap",
+                question: "NTA TRAP: Which of the following statements best describes the relationship between the Internet and Email?",
+                options: [
+                    "Email and the Internet are identical technologies.",
+                    "Email is a broader concept that encompasses the Internet.",
+                    "The Internet is the global network infrastructure, while Email is an application that runs on it.",
+                    "The Internet requires Email to function."
+                ],
+                correctAnswer: 2,
+                explanation: "A common trap is confusing the two. The Internet is the broader infrastructure (hardware/network), while Email is just one application/service running on that infrastructure."
+            },
+            {
+                id: 23,
+                type: "Standard",
+                question: "Which Indian institution developed 'MOOKIT', a highly customizable and cost-effective MOOC management software?",
+                options: [
+                    "IIT Bombay",
+                    "IIT Kanpur",
+                    "IIT Kharagpur",
+                    "IISc Bangalore"
+                ],
+                correctAnswer: 1,
+                explanation: "MOOKIT was developed by IIT Kanpur to help instructors manage MOOCs easily, especially for internet novices."
+            },
+            {
+                id: 24,
+                type: "Standard",
+                question: "The 'Talk to a Teacher' initiative, providing live virtual classrooms, utilizes which collaboration tool?",
+                options: [
+                    "A-view",
+                    "Drillbit",
+                    "Baadal",
+                    "Moodle"
+                ],
+                correctAnswer: 0,
+                explanation: "It uses the 'A-view' collaboration tool (developed by Amrita University) for synchronous delivery of courses."
+            },
+            {
+                id: 25,
+                type: "Standard",
+                question: "The world's first supercomputer (CDC 6600) was designed in 1957 by:",
+                options: [
+                    "John Von Neumann",
+                    "Tim Berners-Lee",
+                    "Seymour Cray",
+                    "Daniel Suchi"
+                ],
+                correctAnswer: 2,
+                explanation: "Seymour Cray designed the CDC 6600 for the US Department of Defense, widely recognized as the world's first supercomputer."
+            },
+
+            {
+                id: 26,
+                type: "Statement",
+                question: "Statement I: According to its fundamental nature, communication is both dynamic and inescapable.\nStatement II: Written communication is highly preferred for informal grapevines because it is temporary and lacks documentary evidence.\n\nChoose the correct answer:",
+                options: [
+                    "Both Statement I and Statement II are correct",
+                    "Both Statement I and Statement II are incorrect",
+                    "Statement I is correct but Statement II is incorrect",
+                    "Statement I is incorrect but Statement II is correct"
+                ],
+                correctAnswer: 2,
+                explanation: "Statement I is correct (DIICC: Dynamic, Inescapable, Irreversible, Complex, Contextual). Statement II is incorrect; written communication is formal, permanent, and provides documentary evidence."
+            },
+            {
+                id: 27,
+                type: "Assertion-Reason",
+                question: "Assertion (A): Paralanguage involves body postures, gestures, and facial expressions conveyed through the whole body.\nReason (R): Body language includes pitch, volume, rate of speech, and intonation, which are understood through hearing.\n\nChoose the correct answer:",
+                options: [
+                    "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+                    "Both (A) and (R) are true but (R) is NOT the correct explanation of (A)",
+                    "(A) is true but (R) is false",
+                    "Both (A) and (R) are false"
+                ],
+                correctAnswer: 3,
+                explanation: "Both statements are entirely false (swapped). Paralanguage is vocal (pitch, tone) understood through hearing. Body language (Kinesics) is physical (gestures) understood through vision."
+            },
+            {
+                id: 28,
+                type: "Standard",
+                question: "In non-verbal communication, what does 'Proxemics' study?",
+                options: [
+                    "The role of time and punctuality",
+                    "The use of color to convey meaning",
+                    "The arrangement and use of space and distance",
+                    "The sense of touch in human interaction"
+                ],
+                correctAnswer: 2,
+                explanation: "Proxemics is the study of space and distance (Intimate, Personal, Social, Public zones)."
+            },
+            {
+                id: 29,
+                type: "Statement",
+                question: "Statement I: In Proxemics, the 'Intimate Zone' ranges from 0 to 1.5 feet and is reserved for close relationships.\nStatement II: The 'Public Zone' is generally considered to be 12 feet and beyond.\n\nChoose the correct answer:",
+                options: [
+                    "Both Statement I and Statement II are correct",
+                    "Both Statement I and Statement II are incorrect",
+                    "Statement I is correct but Statement II is incorrect",
+                    "Statement I is incorrect but Statement II is correct"
+                ],
+                correctAnswer: 0,
+                explanation: "Both statements are correct according to the four zones of Proxemics: Intimate (0-1.5ft), Personal (1.5-4ft), Social (4-12ft), and Public (12+ft)."
+            },
+            {
+                id: 30,
+                type: "Standard",
+                question: "The interpretation of body motion communication such as facial expressions, gestures, and posture is known as:",
+                options: [
+                    "Haptics",
+                    "Oculesics",
+                    "Chronemics",
+                    "Kinesics"
+                ],
+                correctAnswer: 3,
+                explanation: "Kinesics (Body Motion Communication) includes Body Language, Gestures, Postures, and Facial Expressions."
+            },
+            {
+                id: 31,
+                type: "Trap",
+                question: "NTA TRAP: Which type of non-verbal communication is utilized when a company uses 'Red' in its logo to convey excitement and passion?",
+                options: [
+                    "Olfactics",
+                    "Chronemics",
+                    "Chromatics",
+                    "Haptics"
+                ],
+                correctAnswer: 2,
+                explanation: "Chromatics is the communication through the use of colors. (Olfactics = Smell, Chronemics = Time, Haptics = Touch)."
+            },
+            {
+                id: 32,
+                type: "Assertion-Reason",
+                question: "Assertion (A): Diagonal communication breaks traditional hierarchical organizational barriers.\nReason (R): It occurs when employees of different departments and at different hierarchical levels communicate directly with each other.\n\nChoose the correct answer:",
+                options: [
+                    "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+                    "Both (A) and (R) are true but (R) is NOT the correct explanation of (A)",
+                    "(A) is true but (R) is false",
+                    "(A) is false but (R) is true"
+                ],
+                correctAnswer: 0,
+                explanation: "Both (A) and (R) are true, and (R) explains (A). Diagonal communication connects people across different levels and departments, thus bypassing strict chain-of-command."
+            },
+            {
+                id: 33,
+                type: "Standard",
+                question: "Which of the following Grapevine (informal) communication patterns is characterized by a person receiving information and choosing to pass it on only to a highly selective group?",
+                options: [
+                    "Gossip Chain",
+                    "Single Strand Chain",
+                    "Probability Chain",
+                    "Cluster Chain"
+                ],
+                correctAnswer: 3,
+                explanation: "In a Cluster Chain, the sender selectively passes information only to a trusted cluster, unlike Gossip (tells everyone) or Probability (tells randomly)."
+            },
+            {
+                id: 34,
+                type: "Trap",
+                question: "NTA TRAP: The communication that involves thinking, self-concept, and internal contemplation where the flow never goes beyond the mind of the person is called:",
+                options: [
+                    "Interpersonal Communication",
+                    "Intrapersonal Communication",
+                    "Transpersonal Communication",
+                    "Mass Communication"
+                ],
+                correctAnswer: 1,
+                explanation: "Intrapersonal (Intra = within) is communication with oneself. Interpersonal (Inter = between) is between two or more people."
+            },
+            {
+                id: 35,
+                type: "Statement",
+                question: "Statement I: The 'Phatic' stage is the final, most vulnerable stage of interpersonal communication meant only for family members.\nStatement II: The 'Intimate' stage is the initial ice-breaking phase determining the course of conversation.\n\nChoose the correct answer:",
+                options: [
+                    "Both Statement I and Statement II are correct",
+                    "Both Statement I and Statement II are incorrect",
+                    "Statement I is correct but Statement II is incorrect",
+                    "Statement I is incorrect but Statement II is correct"
+                ],
+                correctAnswer: 1,
+                explanation: "Both statements are completely reversed. Phatic is the FIRST stage (ice-breaking). Intimate is the THIRD/FINAL stage (vulnerable/family)."
+            },
+            {
+                id: 36,
+                type: "Standard",
+                question: "Which of the following represents the correct chronological emergence of mass media?",
+                options: [
+                    "Radio -> Newspaper -> Television -> Magazines -> Internet",
+                    "Newspaper -> Magazines -> Radio -> Television -> Internet",
+                    "Magazines -> Newspaper -> Television -> Radio -> Internet",
+                    "Newspaper -> Radio -> Magazines -> Internet -> Television"
+                ],
+                correctAnswer: 1,
+                explanation: "The correct sequence is Newspaper (15th C), Magazines (18th C), Radio (~1910), Television (~1950), Internet (~1990)."
+            },
+            {
+                id: 37,
+                type: "Assertion-Reason",
+                question: "Assertion (A): 'Yellow Journalism' refers to highly accurate, objective reporting that preserves traditional values.\nReason (R): The main goal of Yellow Journalism is to use sensationalism and shocking headlines to catch attention and sell copies.\n\nChoose the correct answer:",
+                options: [
+                    "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+                    "Both (A) and (R) are true but (R) is NOT the correct explanation of (A)",
+                    "(A) is true but (R) is false",
+                    "(A) is false but (R) is true"
+                ],
+                correctAnswer: 3,
+                explanation: "(A) is false because Yellow Journalism lacks factual reporting and objectivity. (R) is true as it relies entirely on sensationalism."
+            },
+            {
+                id: 38,
+                type: "Standard",
+                question: "According to the functions of mass media in society, which function acts as a vehicle to send out cultural rules, values, and norms to socialize the audience?",
+                options: [
+                    "Surveillance",
+                    "Sensationalization",
+                    "Transmission",
+                    "Validation"
+                ],
+                correctAnswer: 2,
+                explanation: "Transmission is the function responsible for passing down cultural values, rules, and norms (socialization function)."
+            },
+            {
+                id: 39,
+                type: "Trap",
+                question: "NTA TRAP: Which of the following best describes a 'High-Context Culture' (like India) regarding communication?",
+                options: [
+                    "Communication is direct, explicit, and task-oriented.",
+                    "Verbal messages are heavily detailed and unambiguous.",
+                    "Communication is indirect, emphasizes human relations, and relies heavily on non-verbal context.",
+                    "Senders are always held directly responsible for any misunderstanding."
+                ],
+                correctAnswer: 2,
+                explanation: "High-Context cultures (like India) are indirect, relationship-oriented, and rely heavily on unspoken context/non-verbals. Low-Context cultures (like the USA) are direct and explicit."
+            },
+            {
+                id: 40,
+                type: "Statement",
+                question: "Statement I: The 'Denotation' of a word is its literal, objective, dictionary meaning.\nStatement II: The 'Connotation' of a word refers to the emotions, cultural associations, and subjective feelings connected to it.\n\nChoose the correct answer:",
+                options: [
+                    "Both Statement I and Statement II are correct",
+                    "Both Statement I and Statement II are incorrect",
+                    "Statement I is correct but Statement II is incorrect",
+                    "Statement I is incorrect but Statement II is correct"
+                ],
+                correctAnswer: 0,
+                explanation: "Both statements are correct. Denotation is literal (objective), while Connotation is emotional/associative (subjective)."
+            },
+            {
+                id: 41,
+                type: "Standard",
+                question: "A communication barrier arising when an individual assumes someone is entirely competent based on one positive trait is known as the:",
+                options: [
+                    "Horn Effect",
+                    "Halo Effect",
+                    "Cognitive Dissonance",
+                    "Stereotyping"
+                ],
+                correctAnswer: 1,
+                explanation: "The Halo Effect is a positive bias where one good trait leads to overall high trust. The Horn effect is the opposite (negative bias)."
+            },
+            {
+                id: 42,
+                type: "Assertion-Reason",
+                question: "Assertion (A): Cognitive dissonance acts as a major psychological barrier to effective communication.\nReason (R): It occurs when an individual receives new information that conflicts with their existing beliefs, creating psychological discomfort and leading them to reject the new information.\n\nChoose the correct answer:",
+                options: [
+                    "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+                    "Both (A) and (R) are true but (R) is NOT the correct explanation of (A)",
+                    "(A) is true but (R) is false",
+                    "(A) is false but (R) is true"
+                ],
+                correctAnswer: 0,
+                explanation: "Both (A) and (R) are true, and (R) is the exact definition of why Cognitive Dissonance serves as a communication barrier."
+            },
+            {
+                id: 43,
+                type: "Standard",
+                question: "In Edward de Bono's 'Six Thinking Hats', which hat represents critical judgment, caution, and identifying weaknesses (playing the devil's advocate)?",
+                options: [
+                    "White Hat",
+                    "Green Hat",
+                    "Black Hat",
+                    "Red Hat"
+                ],
+                correctAnswer: 2,
+                explanation: "The Black Hat (Stern Judge) relates to caution, critical judgment, and finding flaws. (White=Data, Green=Creative, Red=Emotions)."
+            },
+            {
+                id: 44,
+                type: "PYQ",
+                question: "PYQ: Which TV Channel was launched for covering only Engineering and Technology subjects?",
+                options: [
+                    "Gyan Darshan",
+                    "Vyas",
+                    "Kisan",
+                    "Eklavya"
+                ],
+                correctAnswer: 3,
+                explanation: "Eklavya is the specific Information Technology channel dedicated to Engineering and Technology."
+            },
+            {
+                id: 45,
+                type: "Trap",
+                question: "NTA TRAP: Which of the following is the specific technical term used to describe mechanical barriers such as microphone failures or poor telephone lines?",
+                options: [
+                    "Psychological Noise",
+                    "Channel Noise",
+                    "Semantic Noise",
+                    "Cultural Overload"
+                ],
+                correctAnswer: 1,
+                explanation: "Channel Noise is the precise technical term for mechanical barriers (disturbances in the physical transmission machinery/channel)."
+            },
+            {
+                id: 46,
+                type: "PYQ",
+                question: "PYQ: The process by which mass media personnel decide what information gets printed, broadcast, or produced is known as:",
+                options: [
+                    "Sensationalization",
+                    "Gatekeeping",
+                    "Surveillance",
+                    "Validation"
+                ],
+                correctAnswer: 1,
+                explanation: "Gatekeeping is the process where individuals (Gatekeepers) limit, expand, or relay information deciding what reaches the public."
+            },
+            {
+                id: 47,
+                type: "Standard",
+                question: "Which formal communication network features a central hub with spokes, where all communication must flow strictly through the central authority?",
+                options: [
+                    "Y-Network",
+                    "Wheel Network",
+                    "Circle Network",
+                    "All Channel Network"
+                ],
+                correctAnswer: 1,
+                explanation: "The Wheel Network consists of a central hub (authority) with spokes; all communication must go through the center."
+            },
+            {
+                id: 48,
+                type: "Statement",
+                question: "Statement I: The main objective of India's public broadcasting system (Prasar Bharti) is to Inform, Entertain, and Educate.\nStatement II: The 'Vyas' channel is dedicated exclusively to Agriculture.\n\nChoose the correct answer:",
+                options: [
+                    "Both Statement I and Statement II are correct",
+                    "Both Statement I and Statement II are incorrect",
+                    "Statement I is correct but Statement II is incorrect",
+                    "Statement I is incorrect but Statement II is correct"
+                ],
+                correctAnswer: 2,
+                explanation: "Statement I is correct. Statement II is incorrect because 'Vyas' is for Literature/Culture; 'Kisan' is for Agriculture."
+            },
+            {
+                id: 49,
+                type: "Standard",
+                question: "A barrier arising because different departments use highly specialized terminology (jargons) that others cannot understand falls under which category?",
+                options: [
+                    "Psychological Barrier",
+                    "Physical Barrier",
+                    "Organizational Barrier",
+                    "Information Overload"
+                ],
+                correctAnswer: 2,
+                explanation: "Specialization of jobs and activities leading to jargon differences is classified under Organizational Barriers."
+            },
+            {
+                id: 50,
+                type: "PYQ",
+                question: "PYQ: Verbal/Oral communication is highly recommended when:",
+                options: [
+                    "Documentary evidence is strictly required for legal purposes",
+                    "Direct face-to-face interaction is required to build rapport and get immediate feedback",
+                    "The message needs to be formally preserved for long-term records",
+                    "Communication is required across drastically different time zones"
+                ],
+                correctAnswer: 1,
+                explanation: "Oral communication is recommended when direct interaction, rapport building, and immediate/spontaneous feedback are needed."
+            }
+        ];
+
+        const { useState, useEffect } = React;
+
+        const QuizApp = () => {
+            const [gameState, setGameState] = useState('START'); // START, PLAYING, RESULT
+            const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+            const [userAnswers, setUserAnswers] = useState(new Array(QUIZ_DATA.length).fill(null));
+            const [score, setScore] = useState(0);
+
+            const startQuiz = () => {
+                setGameState('PLAYING');
+                setCurrentQuestionIndex(0);
+                setUserAnswers(new Array(QUIZ_DATA.length).fill(null));
+                setScore(0);
+            };
+
+            const handleAnswer = (optionIndex) => {
+                const newAnswers = [...userAnswers];
+                newAnswers[currentQuestionIndex] = optionIndex;
+                setUserAnswers(newAnswers);
+            };
+
+            const nextQuestion = () => {
+                if (currentQuestionIndex < QUIZ_DATA.length - 1) {
+                    setCurrentQuestionIndex(currentQuestionIndex + 1);
+                } else {
+                    calculateScore();
+                    setGameState('RESULT');
+                }
+            };
+
+            const prevQuestion = () => {
+                if (currentQuestionIndex > 0) {
+                    setCurrentQuestionIndex(currentQuestionIndex - 1);
+                }
+            };
+
+            const calculateScore = () => {
+                let calculatedScore = 0;
+                userAnswers.forEach((ans, index) => {
+                    if (ans === QUIZ_DATA[index].correctAnswer) {
+                        calculatedScore += 2; // +2 marks for UGC NET format
+                    }
+                });
+                setScore(calculatedScore);
+            };
+
+            if (gameState === 'START') {
+                return (
+                    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-indigo-800 p-4 text-white">
+                        <div className="bg-white/10 backdrop-blur-lg p-8 md:p-12 rounded-3xl shadow-2xl max-w-2xl text-center border border-white/20">
+                            <div className="mb-6 flex justify-center">
+                                <i data-lucide="graduation-cap" className="w-20 h-20 text-yellow-400"></i>
+                            </div>
+                            <h1 className="text-4xl md:text-5xl font-bold mb-4">UGC NET JRF Simulator</h1>
+                            <p className="text-xl text-blue-200 mb-2">Paper 1: Unit 8 (ICT) & Unit 4 (Communication)</p>
+                            <p className="text-md text-blue-300 mb-8 font-light">Contains 50 highly curated Standard, A/R, Statement, and PYQ Traps based on your expert notes.</p>
+                            
+                            <div className="grid grid-cols-2 gap-4 mb-8 text-left text-sm bg-black/20 p-4 rounded-xl">
+                                <div><span className="font-semibold text-yellow-400">Total Questions:</span> 50</div>
+                                <div><span className="font-semibold text-yellow-400">Marks per Question:</span> +2</div>
+                                <div><span className="font-semibold text-yellow-400">Negative Marking:</span> No</div>
+                                <div><span className="font-semibold text-yellow-400">Max Score:</span> 100</div>
+                            </div>
+
+                            <button 
+                                onClick={startQuiz}
+                                className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-blue-900 font-bold py-4 px-12 rounded-full text-xl transition-all transform hover:scale-105 shadow-xl"
+                            >
+                                Start Mock Test
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'RESULT') {
+                const percentage = (score / 100) * 100;
+                let remark = "Keep Practicing!";
+                if(percentage >= 80) remark = "JRF Ready! Excellent!";
+                else if (percentage >= 60) remark = "Good, NET qualified likely!";
+
+                return (
+                    <div className="min-h-screen bg-gray-50 py-10 px-4">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="bg-white rounded-3xl shadow-xl p-8 text-center mb-8 border-t-8 border-indigo-600">
+                                <h2 className="text-3xl font-bold text-gray-800 mb-2">Test Completed</h2>
+                                <p className="text-gray-500 mb-6">Review your performance</p>
+                                <div className="inline-block bg-indigo-50 rounded-full p-8 border-4 border-indigo-100 mb-4">
+                                    <div className="text-5xl font-black text-indigo-700">{score}<span className="text-2xl text-indigo-400">/100</span></div>
+                                </div>
+                                <h3 className="text-2xl font-bold text-gray-700">{remark}</h3>
+                                <button 
+                                    onClick={startQuiz}
+                                    className="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-full transition-colors"
+                                >
+                                    Retake Test
+                                </button>
+                            </div>
+
+                            <h3 className="text-2xl font-bold text-gray-800 mb-6 px-2">Detailed Solution & Analysis</h3>
+                            <div className="space-y-6">
+                                {QUIZ_DATA.map((q, index) => {
+                                    const userAnswer = userAnswers[index];
+                                    const isCorrect = userAnswer === q.correctAnswer;
+                                    const isSkipped = userAnswer === null;
+
+                                    return (
+                                        <div key={q.id} className={`bg-white rounded-2xl shadow-md p-6 border-l-8 ${isCorrect ? 'border-green-500' : (isSkipped ? 'border-gray-400' : 'border-red-500')}`}>
+                                            <div className="flex justify-between items-start mb-4">
+                                                <span className="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full">Q {index + 1} | {q.type}</span>
+                                                <span className={`text-sm font-bold px-3 py-1 rounded-full ${isCorrect ? 'bg-green-100 text-green-700' : (isSkipped ? 'bg-gray-100 text-gray-600' : 'bg-red-100 text-red-700')}`}>
+                                                    {isCorrect ? '+2 Marks' : (isSkipped ? 'Skipped' : '0 Marks')}
+                                                </span>
+                                            </div>
+                                            <p className="font-semibold text-gray-800 text-lg mb-4 whitespace-pre-wrap">{q.question}</p>
+                                            
+                                            <div className="space-y-2 mb-4">
+                                                {q.options.map((opt, optIndex) => (
+                                                    <div key={optIndex} className={`p-3 rounded-lg text-sm border ${
+                                                        optIndex === q.correctAnswer ? 'bg-green-50 border-green-200 text-green-800 font-medium' :
+                                                        optIndex === userAnswer && !isCorrect ? 'bg-red-50 border-red-200 text-red-800' :
+                                                        'bg-gray-50 border-gray-100 text-gray-600'
+                                                    }`}>
+                                                        {opt}
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                                                <div className="flex items-center text-blue-800 font-bold mb-1 text-sm">
+                                                    <i data-lucide="info" className="w-4 h-4 mr-1"></i> Expert Explanation
+                                                </div>
+                                                <p className="text-blue-900 text-sm leading-relaxed">{q.explanation}</p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            const currentQ = QUIZ_DATA[currentQuestionIndex];
+            const isLastQuestion = currentQuestionIndex === QUIZ_DATA.length - 1;
+
+            return (
+                <div className="min-h-screen bg-gray-100 flex flex-col">
+                    {/* Header bar */}
+                    <div className="bg-white shadow-sm border-b px-6 py-4 flex justify-between items-center sticky top-0 z-10">
+                        <div className="font-bold text-indigo-700 flex items-center">
+                            <i data-lucide="laptop" className="w-5 h-5 mr-2"></i> NTA CBT SIMULATOR
+                        </div>
+                        <div className="flex space-x-2">
+                            {/* Minimap for progress */}
+                            <div className="text-sm font-semibold bg-indigo-50 text-indigo-700 px-4 py-1.5 rounded-full border border-indigo-100">
+                                {currentQuestionIndex + 1} / {QUIZ_DATA.length}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Question Content */}
+                    <div className="flex-grow p-4 md:p-8 flex justify-center items-start">
+                        <div className="bg-white w-full max-w-4xl rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                                <span className="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                    {currentQ.type} Question
+                                </span>
+                                <span className="text-gray-400 text-sm">ID: NET26_{currentQ.id}</span>
+                            </div>
+                            
+                            <div className="p-6 md:p-10">
+                                <p className="text-xl text-gray-800 font-medium mb-8 whitespace-pre-wrap leading-relaxed">
+                                    {currentQ.question}
+                                </p>
+
+                                <div className="space-y-4">
+                                    {currentQ.options.map((opt, index) => {
+                                        const isSelected = userAnswers[currentQuestionIndex] === index;
+                                        return (
+                                            <label 
+                                                key={index}
+                                                className={`flex items-start p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                                                    isSelected 
+                                                    ? 'border-indigo-600 bg-indigo-50' 
+                                                    : 'border-gray-200 hover:border-indigo-300 hover:bg-gray-50'
+                                                }`}
+                                            >
+                                                <div className="flex-shrink-0 mt-0.5">
+                                                    <input 
+                                                        type="radio" 
+                                                        name={`q-${currentQ.id}`}
+                                                        className="w-5 h-5 text-indigo-600 focus:ring-indigo-500"
+                                                        checked={isSelected}
+                                                        onChange={() => handleAnswer(index)}
+                                                    />
+                                                </div>
+                                                <div className="ml-4">
+                                                    <span className={`text-base ${isSelected ? 'text-indigo-900 font-medium' : 'text-gray-700'}`}>
+                                                        {opt}
+                                                    </span>
+                                                </div>
+                                            </label>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            {/* Footer Actions */}
+                            <div className="bg-gray-50 p-4 md:p-6 border-t flex justify-between items-center">
+                                <button 
+                                    onClick={prevQuestion}
+                                    disabled={currentQuestionIndex === 0}
+                                    className={`px-6 py-2.5 rounded-lg font-semibold transition-colors ${
+                                        currentQuestionIndex === 0 
+                                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                                        : 'bg-white border-2 border-gray-300 text-gray-700 hover:bg-gray-100'
+                                    }`}
+                                >
+                                    Previous
+                                </button>
+                                
+                                <button 
+                                    onClick={nextQuestion}
+                                    className={`px-8 py-2.5 rounded-lg font-semibold text-white shadow-md transition-colors ${
+                                        isLastQuestion 
+                                        ? 'bg-green-600 hover:bg-green-700' 
+                                        : 'bg-indigo-600 hover:bg-indigo-700'
+                                    }`}
+                                >
+                                    {isLastQuestion ? 'Submit Test' : 'Save & Next'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<QuizApp />, document.getElementById('root'));
+        
+        // Initialize Lucide icons
+        setTimeout(() => {
+            lucide.createIcons();
+        }, 100);
+    </script>
+</body>
+</html>
